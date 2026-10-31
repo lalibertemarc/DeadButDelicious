@@ -1,46 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
-    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
-      <stop offset="0" stop-color="#2f5a35"/>
-      <stop offset="0.6" stop-color="#15301c"/>
-      <stop offset="1" stop-color="#07130b"/>
+    <radialGradient id="bg" cx="50%" cy="45%" r="72%">
+      <stop offset="0" stop-color="#4a3360"/>
+      <stop offset="0.55" stop-color="#241631"/>
+      <stop offset="1" stop-color="#0d0712"/>
     </radialGradient>
     <radialGradient id="aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#b6f24a" stop-opacity="0.3"/>
+      <stop offset="0" stop-color="#b6f24a" stop-opacity="0.35"/>
       <stop offset="1" stop-color="#b6f24a" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="pool" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#b6f24a" stop-opacity="0.6"/>
-      <stop offset="1" stop-color="#b6f24a" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fff0b0"/>
-      <stop offset="0.45" stop-color="#e5b94c"/>
-      <stop offset="1" stop-color="#8f5f17"/>
-    </linearGradient>
     <linearGradient id="silver" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#8d979c"/>
       <stop offset="0.45" stop-color="#f4f7f8"/>
       <stop offset="1" stop-color="#9aa4a9"/>
     </linearGradient>
-    <radialGradient id="china" cx="50%" cy="40%" r="60%">
-      <stop offset="0" stop-color="#fbf7ea"/>
-      <stop offset="1" stop-color="#cfc6ab"/>
-    </radialGradient>
-    <radialGradient id="meat" cx="40%" cy="35%" r="70%">
-      <stop offset="0" stop-color="#e48a5c"/>
-      <stop offset="0.55" stop-color="#b2502c"/>
-      <stop offset="1" stop-color="#6e2a14"/>
-    </radialGradient>
-    <linearGradient id="bone" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#fffaf0"/>
-      <stop offset="1" stop-color="#d8cdb0"/>
+    <linearGradient id="handle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a4a1c"/>
+      <stop offset="0.45" stop-color="#c58a45"/>
+      <stop offset="1" stop-color="#6a3c14"/>
     </linearGradient>
-    <mask id="bite">
-      <rect x="-100" y="-100" width="200" height="200" fill="#fff"/>
-      <circle cx="-42" cy="-33" r="11" fill="#000"/>
-      <circle cx="-24" cy="-35" r="11" fill="#000"/>
-    </mask>
+    <radialGradient id="bone" cx="45%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#fbf6e6"/>
+      <stop offset="0.6" stop-color="#e0d4b0"/>
+      <stop offset="1" stop-color="#a99a72"/>
+    </radialGradient>
+    <linearGradient id="slime" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e2ff8a"/>
+      <stop offset="1" stop-color="#7fc21f"/>
+    </linearGradient>
     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur stdDeviation="5" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
@@ -49,88 +36,74 @@
 
   <rect width="400" height="400" fill="url(#bg)"/>
 
-  <!-- stars -->
-  <g fill="#fff6d0" opacity="0.8">
-    <circle cx="44" cy="40" r="2"/><circle cx="150" cy="30" r="1.4"/><circle cx="30" cy="170" r="1.6"/>
-    <circle cx="372" cy="150" r="2"/><circle cx="64" cy="300" r="1.4"/><circle cx="380" cy="290" r="1.4"/>
+  <!-- plague glow behind the skull -->
+  <circle cx="200" cy="200" r="170" fill="url(#aura)"/>
+
+  <!-- fork: tines upper left -->
+  <g transform="translate(200,200) rotate(-44) scale(1.12)" stroke="#1c1420" stroke-width="5" stroke-linejoin="round">
+    <path fill="url(#silver)" d="M-7,-92 L-9,24 L9,24 L7,-92 Z"/>
+    <path fill="url(#silver)" d="M-30,-172 L-30,-112 C-30,-97 -18,-88 0,-88 C18,-88 30,-97 30,-112 L30,-172 L21,-172 L21,-122 L13,-122 L13,-172 L4,-172 L4,-122 L-4,-122 L-4,-172 L-13,-172 L-13,-122 L-21,-122 L-21,-172 Z"/>
+    <rect fill="url(#handle)" x="-12" y="20" width="24" height="150" rx="12"/>
   </g>
 
-  <!-- plague aura around the diner -->
-  <circle cx="200" cy="250" r="150" fill="url(#aura)"/>
-  <ellipse cx="200" cy="356" rx="150" ry="26" fill="url(#pool)"/>
-
-  <!-- fork (left) and knife (right), held upright -->
-  <g stroke="#2a2f33" stroke-width="4" stroke-linejoin="round" fill="url(#silver)">
-    <path d="M124,146 L124,262 L136,262 L136,146 Z"/>
-    <path d="M110,92 L110,134 C110,146 118,152 130,152 C142,152 150,146 150,134 L150,92 L142,92 L142,128 L136,128 L136,92 L124,92 L124,128 L118,128 L118,92 Z"/>
-    <path d="M264,150 L264,262 L276,262 L276,192 C291,183 295,164 288,136 C282,126 270,130 264,150 Z"/>
+  <!-- knife: blade upper right -->
+  <g transform="translate(200,200) rotate(44) scale(1.12)" stroke="#1c1420" stroke-width="5" stroke-linejoin="round">
+    <path fill="url(#silver)" d="M-12,14 L-12,-150 C-12,-166 -6,-176 2,-176 C16,-166 22,-130 20,-70 L20,14 Z"/>
+    <rect fill="url(#handle)" x="-13" y="12" width="26" height="158" rx="12"/>
   </g>
 
-  <!-- the diner: arms raised, utensils in hand -->
-  <g stroke-linecap="round">
-    <g stroke="#3a2306" stroke-width="24">
-      <path d="M170,280 L132,246"/>
-      <path d="M230,280 L268,246"/>
-    </g>
-    <g stroke="url(#gold)" stroke-width="16">
-      <path d="M170,280 L132,246"/>
-      <path d="M230,280 L268,246"/>
-    </g>
+  <g transform="translate(200,206) scale(0.8) translate(-200,-196)">
+  <!-- the skull -->
+  <g stroke="#1c1420" stroke-width="5" stroke-linejoin="round">
+    <!-- mouth shadow between the jaws -->
+    <rect x="146" y="252" width="108" height="26" fill="#1c1420"/>
+    <!-- jaw, dropped a little: mid-chew -->
+    <path fill="url(#bone)" d="M140,276 L260,276 C262,300 244,322 200,324 C156,322 138,300 140,276 Z"/>
+    <path fill="#f4ecd4" d="M152,276 L248,276 L248,290 L152,290 Z"/>
+    <!-- cranium -->
+    <path fill="url(#bone)" d="M200,62 C272,62 306,112 306,170 C306,206 290,228 270,240 L264,262 L136,262 L130,240 C110,228 94,206 94,170 C94,112 128,62 200,62 Z"/>
+    <path fill="#f4ecd4" d="M146,248 L254,248 L254,264 L146,264 Z"/>
   </g>
-  <g stroke="#3a2306" stroke-width="4" fill="url(#gold)">
-    <circle cx="130" cy="244" r="13"/>
-    <circle cx="270" cy="244" r="13"/>
+  <!-- teeth -->
+  <g stroke="#1c1420" stroke-width="3.5" stroke-linecap="round">
+    <path d="M164,249 L164,263 M182,249 L182,263 M200,249 L200,263 M218,249 L218,263 M236,249 L236,263"/>
+    <path d="M168,277 L168,289 M186,277 L186,289 M204,277 L204,289 M222,277 L222,289 M240,277 L240,289"/>
   </g>
-  <g transform="translate(200,306) scale(1.7)" stroke="#3a2306" stroke-width="2.4" stroke-linejoin="round" fill="url(#gold)">
-    <path d="M-28,0 C-28,-30 -18,-44 0,-44 C18,-44 28,-30 28,0 Z"/>
-    <circle cx="0" cy="-62" r="15"/>
+  <!-- a missing tooth, as is tradition -->
+  <rect x="219.5" y="250" width="15" height="12" fill="#1c1420"/>
+
+  <!-- eye sockets and nose -->
+  <g fill="#1c1420">
+    <path d="M128,176 C128,152 146,142 166,146 C186,150 194,166 190,184 C186,204 166,212 150,206 C136,200 128,190 128,176 Z"/>
+    <path d="M272,176 C272,152 254,142 234,146 C214,150 206,166 210,184 C214,204 234,212 250,206 C264,200 272,190 272,176 Z"/>
+    <path d="M200,212 L186,236 C190,242 196,240 200,234 C204,240 210,242 214,236 Z"/>
   </g>
-  <!-- undead eyes -->
+  <!-- a crack, Forsaken style -->
+  <path d="M232,66 L224,92 L238,106 L226,130" fill="none" stroke="#1c1420" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- cheek shading -->
+  <g fill="#a99a72" opacity="0.5">
+    <ellipse cx="128" cy="222" rx="12" ry="16"/>
+    <ellipse cx="272" cy="222" rx="12" ry="16"/>
+  </g>
+
+  <!-- hungry glowing eyes -->
   <g fill="#c4ff5a" filter="url(#glow)">
-    <ellipse cx="191" cy="199" rx="4.5" ry="3.5"/><ellipse cx="209" cy="199" rx="4.5" ry="3.5"/>
-  </g>
-  <!-- napkin tucked in -->
-  <path d="M184,236 L216,236 L200,262 Z" fill="#fbf7ea" stroke="#3a2306" stroke-width="3.5" stroke-linejoin="round"/>
-
-  <!-- the plate -->
-  <ellipse cx="200" cy="322" rx="132" ry="40" fill="url(#gold)" stroke="#3a2306" stroke-width="4"/>
-  <ellipse cx="200" cy="320" rx="112" ry="30" fill="url(#china)" stroke="#8f5f17" stroke-width="2.5"/>
-
-  <!-- the meal: a drumstick with a bite out of it -->
-  <g transform="translate(192,304) rotate(-12)">
-    <g stroke="#3a1d0e" stroke-width="3.5" stroke-linejoin="round" fill="url(#bone)">
-      <rect x="18" y="-7" width="46" height="14" rx="4"/>
-      <circle cx="68" cy="-9" r="10"/>
-      <circle cx="68" cy="9" r="10"/>
-    </g>
-    <path d="M60,-5 L60,5" stroke="url(#bone)" stroke-width="10"/>
-    <path mask="url(#bite)" d="M-74,0 C-74,-32 -42,-40 -10,-31 C10,-26 22,-14 28,-6 L28,6 C22,14 10,25 -10,31 C-42,40 -74,32 -74,0 Z"
-      fill="url(#meat)" stroke="#3a1d0e" stroke-width="3.5" stroke-linejoin="round"/>
-    <g fill="none" stroke="#3a1d0e" stroke-width="3.5" stroke-linecap="round">
-      <path d="M-53,-31 A11,11 0 0,0 -33,-28"/>
-      <path d="M-33,-28 A11,11 0 0,0 -14,-31"/>
-    </g>
-    <ellipse cx="-44" cy="-6" rx="14" ry="6" fill="#f3b48a" opacity="0.55"/>
+    <circle cx="163" cy="178" r="10"/>
+    <circle cx="237" cy="178" r="10"/>
   </g>
 
-  <!-- the review: a speech bubble with three gold stars -->
-  <g stroke="#3a2306" stroke-width="4" stroke-linejoin="round">
-    <path d="M286,40 L352,40 C366,40 376,50 376,64 L376,82 C376,96 366,106 352,106 L300,106 L250,140 L272,106 L286,106 C272,106 262,96 262,82 L262,64 C262,50 272,40 286,40 Z"
-      fill="#fbf7ea"/>
+  <!-- drool: it's delicious -->
+  <g filter="url(#glow)">
+    <path fill="url(#slime)" stroke="#2e4a0c" stroke-width="3" stroke-linejoin="round"
+      d="M244,290 C246,304 240,318 244,334 C248,348 264,348 266,334 C268,318 258,304 256,290 Z"/>
   </g>
-  <g fill="url(#gold)" stroke="#3a2306" stroke-width="2.5" stroke-linejoin="round">
-    <path transform="translate(290,74)" d="M0,-14 L3.5,-4.8 L13.3,-4.3 L5.6,1.8 L8.2,11.3 L0,5.9 L-8.2,11.3 L-5.6,1.8 L-13.3,-4.3 L-3.5,-4.8 Z"/>
-    <path transform="translate(319,74)" d="M0,-14 L3.5,-4.8 L13.3,-4.3 L5.6,1.8 L8.2,11.3 L0,5.9 L-8.2,11.3 L-5.6,1.8 L-13.3,-4.3 L-3.5,-4.8 Z"/>
-    <path transform="translate(348,74)" d="M0,-14 L3.5,-4.8 L13.3,-4.3 L5.6,1.8 L8.2,11.3 L0,5.9 L-8.2,11.3 L-5.6,1.8 L-13.3,-4.3 L-3.5,-4.8 Z"/>
+  <ellipse cx="251" cy="326" rx="3" ry="5" fill="#f4ffd0" opacity="0.8"/>
+
   </g>
 
-  <!-- plague embers and sparkles -->
+  <!-- embers -->
   <g fill="#c4ff5a" filter="url(#glow)">
-    <circle cx="70" cy="214" r="4"/><circle cx="336" cy="196" r="3.5"/><circle cx="52" cy="330" r="3"/>
-    <circle cx="350" cy="332" r="4"/><circle cx="92" cy="60" r="2.5"/>
-  </g>
-  <g fill="#fff6d0">
-    <path d="M200,52 l4,12 l12,4 l-12,4 l-4,12 l-4,-12 l-12,-4 l12,-4 z"/>
-    <path d="M56,120 l3,9 l9,3 l-9,3 l-3,9 l-3,-9 l-9,-3 l9,-3 z"/>
+    <circle cx="62" cy="80" r="3.5"/><circle cx="346" cy="92" r="3"/><circle cx="48" cy="250" r="3"/>
+    <circle cx="356" cy="268" r="4"/><circle cx="110" cy="360" r="3"/><circle cx="300" cy="364" r="2.5"/>
   </g>
 </svg>
