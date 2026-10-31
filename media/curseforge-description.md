@@ -69,6 +69,18 @@ Other races don't have the stomach for this. On any other race the addon stays q
 
 Runs on **WoW Forever** and **Classic Era** from one download.
 
-## Suggest a dish!
+## Write a review for the critic!
 
-Ate something the critic had no opinion on? Have a better line for gnolls? **Tell us in the comments or on [GitHub](https://github.com/lalibertemarc/DeadButDelicious/issues)** with the monster's name and a line or two. The best ones go into the next update.
+The critic's palate grows with every update, and the best lines come from players. **Leave a comment with your own lines**, and say which corpse they're for:
+
+- **A monster or faction already on the menu**: a new line for murlocs, the Defias, ghouls...
+- **A monster with no lines yet**: the Twilight's Hammer, the Burning Blade, Kul Tiran marines, gargoyles. Tell us its name as it shows on the corpse. Cannibalize only works on Humanoid and Undead corpses, so no wolves.
+- **A player race**: what does a gnome taste like to you?
+- **A famous name**: a boss or rare you'd love to eat, like Hogger, VanCleef or Herod.
+- **Any corpse at all**: a line that works on anything.
+
+For example:
+
+> **Kobold:** "Kobold. The candle was the best part."
+
+Keep it short enough for one `/say` line. Use `{name}` where the corpse's name should go: *"{name}. Needs salt."* The best lines go into the next update. You can also post them on [GitHub](https://github.com/lalibertemarc/DeadButDelicious/issues).
