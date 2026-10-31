@@ -44,8 +44,8 @@ Cast Cannibalize from your normal action bar and you still get a review, but onl
 ## Say it your way
 
 - **`/say`** by default, so everyone nearby hears your verdict.
-- **Emote mode**: `/cannibal emote` turns reviews into `/e` emotes: *Grimbald chews thoughtfully. "Murloc. Salty."*
-- **Private mode**: `/cannibal private` keeps every review to yourself.
+- **Emote mode**: `/dbd emote` turns reviews into `/e` emotes: *Grimbald chews thoughtfully. "Murloc. Salty."*
+- **Private mode**: `/dbd private` keeps every review to yourself.
 
 ## Dungeons and raids
 
@@ -53,15 +53,15 @@ On WoW Forever, the game hides what a corpse is inside dungeons and raids, so th
 
 ## Commands
 
-`/cannibal` or `/foodcritic`
+`/dbd` or `/deadbutdelicious` (`/cannibal` and `/foodcritic` work too)
 
 | Command | Does |
 |---|---|
-| `/cannibal say` | Review in `/say` (default) |
-| `/cannibal emote` | Review as an `/e` emote |
-| `/cannibal private` | Toggle: every review is for your eyes only |
-| `/cannibal test` | Taste your target (or the last corpse) without eating it, only you see it |
-| `/cannibal reset` | Reset the icon position (Shift-drag moves it) |
+| `/dbd say` | Review in `/say` (default) |
+| `/dbd emote` | Review as an `/e` emote |
+| `/dbd private` | Toggle: every review is for your eyes only |
+| `/dbd test` | Taste your target (or the last corpse) without eating it, only you see it |
+| `/dbd reset` | Reset the icon position (Shift-drag moves it) |
 
 ## Undead only
 

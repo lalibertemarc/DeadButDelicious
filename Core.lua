@@ -306,11 +306,11 @@ end
 -- Slash commands
 ---------------------------------------------------------------------------
 local HELP = {
-    "/cannibal say - comment in /say (default)",
-    "/cannibal emote - comment as an /e emote",
-    "/cannibal private - toggle: comments only you see",
-    "/cannibal test - taste your target (or the last corpse), only you see it",
-    "/cannibal reset - reset the icon position",
+    "/dbd say - comment in /say (default)",
+    "/dbd emote - comment as an /e emote",
+    "/dbd private - toggle: comments only you see",
+    "/dbd test - taste your target (or the last corpse), only you see it",
+    "/dbd reset - reset the icon position",
 }
 
 local COMMANDS = {
@@ -331,8 +331,10 @@ local COMMANDS = {
     end,
 }
 
-SLASH_DEADBUTDELICIOUS1 = "/cannibal"
-SLASH_DEADBUTDELICIOUS2 = "/foodcritic"
+SLASH_DEADBUTDELICIOUS1 = "/dbd"
+SLASH_DEADBUTDELICIOUS2 = "/deadbutdelicious"
+SLASH_DEADBUTDELICIOUS3 = "/cannibal" -- the 1.0.0 commands still work
+SLASH_DEADBUTDELICIOUS4 = "/foodcritic"
 SlashCmdList.DEADBUTDELICIOUS = function(msg)
     local fn = COMMANDS[strtrim(msg):lower()]
     if fn then return fn() end

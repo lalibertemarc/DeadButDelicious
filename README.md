@@ -30,15 +30,15 @@ Edit every line, and the words that pick them, in `Data.lua`.
 
 ## Commands
 
-Use `/cannibal` or `/foodcritic`.
+Use `/dbd` or `/deadbutdelicious` (`/cannibal` and `/foodcritic` work too).
 
 | Command | Does |
 |---|---|
-| `/cannibal say` | Comment in `/say` (default) |
-| `/cannibal emote` | Comment as an `/e` emote: *Grimbald chews thoughtfully. "Murloc. Salty."* |
-| `/cannibal private` | Toggle: every comment is for your eyes only |
-| `/cannibal test` | Taste your target (or the last corpse) without eating it, only you see it |
-| `/cannibal reset` | Reset the icon position (Shift-drag moves it) |
+| `/dbd say` | Comment in `/say` (default) |
+| `/dbd emote` | Comment as an `/e` emote: *Grimbald chews thoughtfully. "Murloc. Salty."* |
+| `/dbd private` | Toggle: every comment is for your eyes only |
+| `/dbd test` | Taste your target (or the last corpse) without eating it, only you see it |
+| `/dbd reset` | Reset the icon position (Shift-drag moves it) |
 
 ## Install
 
