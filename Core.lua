@@ -62,10 +62,27 @@ local function IsCannibalize(spellID)
     return spellID == spell.id or (spell.name ~= nil and SpellInfo(spellID) == spell.name)
 end
 
-local function OnCooldown()
-    local cd = spell.id and C_Spell and C_Spell.GetSpellCooldown and C_Spell.GetSpellCooldown(spell.id)
-    -- Longer than a global cooldown and not over yet. Unknown (secret) counts as ready.
-    return cd and Safe(function() return cd.duration > 1.5 and cd.startTime + cd.duration > GetTime() end) or false
+local function Cooldown()
+    if not spell.id then return end
+    if C_Spell and C_Spell.GetSpellCooldown then return C_Spell.GetSpellCooldown(spell.id) end
+    if GetSpellCooldown then
+        local startTime, duration = GetSpellCooldown(spell.id)
+        return startTime and { startTime = startTime, duration = duration }
+    end
+end
+
+-- A cooldown longer than minDuration and not over yet; 0 counts the global cooldown too.
+-- Unknown (secret) counts as ready.
+local function CoolingDown(minDuration)
+    local cd = Cooldown()
+    return cd and Safe(function() return cd.duration > minDuration and cd.startTime + cd.duration > GetTime() end) or false
+end
+
+local function OnCooldown() return CoolingDown(1.5) end
+
+-- Casting or channeling something (Cannibalize itself included): a click now casts nothing.
+local function Busy()
+    return Safe(function() return (UnitCastingInfo("player") or UnitChannelInfo("player")) ~= nil end) or false
 end
 
 ---------------------------------------------------------------------------
@@ -164,11 +181,12 @@ end
 
 local spokeAt = -math.huge -- GetTime() of the last comment said aloud
 
--- The cast will clearly fail (moving, on cooldown, corpse out of reach): nothing to comment on.
+-- The cast will clearly fail (moving, on cooldown or the global cooldown, already casting,
+-- corpse out of reach): nothing to comment on.
 local function WillFail()
     local speed = GetUnitSpeed("player")
     if speed and not issecret(speed) and speed > 0 then return true end
-    if OnCooldown() then return true end
+    if CoolingDown(0) or Busy() then return true end
     -- Duel range (~10 yd) is the closest check there is; Cannibalize needs 5.
     return Safe(function() return CheckInteractDistance("target", 3) == false end) or false
 end
@@ -178,6 +196,7 @@ end
 local function OnPreClick(_, button, down)
     if down or button ~= "LeftButton" or not spell.name then return end
     if DeadButDeliciousDB.private or ChatLocked() then return end -- the cast itself then comments to you
+    if GetTime() - spokeAt < ns.QUIET then return end
     local c = Corpse("target")
     if not c or WillFail() then return end
     Send(Comment(c))

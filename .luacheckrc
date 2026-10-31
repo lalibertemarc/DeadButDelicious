@@ -21,6 +21,6 @@ read_globals = {
     -- Namespaced APIs
     "C_Spell", "C_Timer", "C_ChatInfo", "issecretvalue",
     -- Global APIs
-    "GetBuildInfo", "GetSpellInfo", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
-    "UnitExists", "UnitIsDead", "UnitIsPlayer", "UnitCreatureType", "UnitName", "UnitRace", "SendChatMessage",
+    "GetBuildInfo", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
+    "UnitExists", "UnitCastingInfo", "UnitChannelInfo", "UnitIsDead", "UnitIsPlayer", "UnitCreatureType", "UnitName", "UnitRace", "SendChatMessage",
 }

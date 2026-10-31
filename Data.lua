@@ -14,6 +14,9 @@ ns.EDIBLE = { Humanoid = true, Undead = true }
 -- Seconds a corpse you targeted is remembered after you lose the target (for casts from your bar).
 ns.MEMORY = 60
 
+-- Seconds after a comment before the next click can say another (spam clicks).
+ns.QUIET = 3
+
 -- How often a line from ns.ANY replaces the corpse's own lines.
 ns.ANY_CHANCE = 0.2
 

@@ -1,5 +1,9 @@
 # Dead But Delicious
 
+## Unreleased
+
+- **No more empty boasts.** Clicking the icon or key binding during the global cooldown, or while already casting or eating, no longer says a line without Cannibalize going out, and spam clicks get at most one comment every 3 seconds.
+
 ## v1.1.0
 
 - **Commands that match the name.** `/dbd` and `/deadbutdelicious` now open the addon's commands. `/cannibal` and `/foodcritic` still work.
