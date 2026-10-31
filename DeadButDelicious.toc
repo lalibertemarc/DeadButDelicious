@@ -1,0 +1,10 @@
+## Interface: 16001, 11509
+## Title: Dead But Delicious
+## Notes: Undead food critic. Comment on every corpse you Cannibalize, in /say.
+## Author: Marc
+## Version: @project-version@
+## IconTexture: Interface\Icons\Ability_Racial_Cannibalize
+## SavedVariables: DeadButDeliciousDB
+
+Data.lua
+Core.lua
