@@ -4,6 +4,7 @@
 ## Author: Marc
 ## Version: @project-version@
 ## IconTexture: Interface\Icons\Ability_Racial_Cannibalize
+## X-Curse-Project-ID: 1776539
 ## SavedVariables: DeadButDeliciousDB
 
 Data.lua
