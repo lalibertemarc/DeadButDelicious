@@ -175,14 +175,37 @@ local function Pick(lines)
     return lines[i]
 end
 
--- The comment on corpse c (nil: unknown), and the chat type it goes in.
+-- The game refuses chat messages past 255 bytes.
+local MAX_MESSAGE = 255
+
+-- line in your accent (DeadButDeliciousCharDB.accent, Accent.lua), {name} still unfilled so the corpse's name is
+-- never respelled; max: bytes it may take with the name filled in. Plain if the accent would run past that.
+local function Accented(line, name, max)
+    local accent = DeadButDeliciousCharDB and DeadButDeliciousCharDB.accent
+    if not ns.ACCENTS[accent] or accent == "none" then return line end
+    local _, names = line:gsub("{name}", "")
+    max = max - names * (#name - #"{name}")
+    local text = ns.Speak(accent, line, max)
+    return #text <= max and text or line
+end
+
+-- Line with {name} filled in, in your accent; room: bytes left for it in the message.
+local function Say(line, name, room)
+    -- Function replacement, so a "%" in a name can't break gsub. The name goes in after the accent.
+    return (Accented(line, name, room):gsub("{name}", function() return name end))
+end
+
+-- The comment on corpse c (nil: unknown), and the chat type it goes in. In /e the bite is narration and stays
+-- plain; only the "quoted" comment has an accent.
 local function Comment(c)
     local lines = (c and c.lines) or ns.MYSTERY
     if math.random() < ns.ANY_CHANCE then lines = ns.ANY end
-    -- Function replacement, so a "%" in a name can't break gsub.
-    local text = Pick(lines):gsub("{name}", function() return c and c.name or "This" end)
-    if DeadButDeliciousDB.chat == "EMOTE" then return format('%s "%s"', Pick(ns.BITES), text), "EMOTE" end
-    return text, "SAY"
+    local name = c and c.name or "This"
+    if DeadButDeliciousDB.chat == "EMOTE" then
+        local bite = Pick(ns.BITES)
+        return format('%s "%s"', bite, Say(Pick(lines), name, MAX_MESSAGE - #bite - 3)), "EMOTE"
+    end
+    return Say(Pick(lines), name, MAX_MESSAGE), "SAY"
 end
 
 -- Prints the comment as if said, for your eyes only.
@@ -342,17 +365,36 @@ local HELP = {
     "/dbd say - comment in /say (default)",
     "/dbd emote - comment as an /e emote",
     "/dbd private - toggle: comments only you see",
+    "/dbd accent [none|locked|jawless] - show or set your undead accent (locked jaw, jawless) for this character",
     "/dbd test - taste your target (or the last corpse), only you see it",
     "/dbd reset - reset the icon position",
 }
 
+-- Shows your accent, or sets it (arg: a key of ns.ACCENTS or its name, "locked jaw"), with a sample said only to you.
+local function SetAccent(arg)
+    if arg ~= "" then
+        local key = ns.ACCENTS[arg] and arg
+        for k, label in pairs(ns.ACCENTS) do
+            if label == arg then key = k end
+        end
+        if not key then return Print("Accents: " .. table.concat(ns.ACCENT_ORDER, ", ") .. ".") end
+        DeadButDeliciousCharDB.accent = key
+    end
+    local accent = DeadButDeliciousCharDB.accent
+    Print("Accent: " .. ns.ACCENTS[accent] .. (arg == "" and " (/dbd accent " .. table.concat(ns.ACCENT_ORDER, "|") .. ")" or "."))
+    if accent ~= "none" then
+        Print("Sample: " .. Say(ns.ACCENT_SAMPLE, "Murloc Forager", MAX_MESSAGE))
+    end
+end
+
 local COMMANDS = {
-    say = function() DeadButDeliciousDB.chat = "SAY"; Print("Comments go in /say.") end,
+    say =function() DeadButDeliciousDB.chat = "SAY"; Print("Comments go in /say.") end,
     emote = function() DeadButDeliciousDB.chat = "EMOTE"; Print("Comments go in /e.") end,
     private = function()
         DeadButDeliciousDB.private = not DeadButDeliciousDB.private
         Print(DeadButDeliciousDB.private and "Comments are for your ears only." or ("Comments go " .. Where() .. " again."))
     end,
+    accent = SetAccent,
     test = function()
         Echo(Comment(Corpse("target") or RecentCorpse()))
     end,
@@ -369,8 +411,9 @@ SLASH_DEADBUTDELICIOUS2 = "/deadbutdelicious"
 SLASH_DEADBUTDELICIOUS3 = "/cannibal" -- the 1.0.0 commands still work
 SLASH_DEADBUTDELICIOUS4 = "/foodcritic"
 SlashCmdList.DEADBUTDELICIOUS = function(msg)
-    local fn = COMMANDS[strtrim(msg):lower()]
-    if fn then return fn() end
+    local cmd, arg = strtrim(msg):lower():match("^(%S*)%s*(.-)$")
+    local fn = COMMANDS[cmd]
+    if fn then return fn(arg) end
     Print("Comments go " .. Where() .. ".")
     for _, line in ipairs(HELP) do Print(line) end
 end
@@ -384,6 +427,8 @@ ev:SetScript("OnEvent", function(self, event, _, _, spellID)
     if event == "PLAYER_LOGIN" then
         DeadButDeliciousDB = DeadButDeliciousDB or {}
         DeadButDeliciousDB.chat = DeadButDeliciousDB.chat or "SAY"
+        DeadButDeliciousCharDB = DeadButDeliciousCharDB or {}
+        if not ns.ACCENTS[DeadButDeliciousCharDB.accent] then DeadButDeliciousCharDB.accent = "none" end
         -- Undead only: everyone else gets no icon, binding or comments.
         local _, race = UnitRace("player")
         if race ~= "Scourge" and race ~= "Undead" then

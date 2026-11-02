@@ -20,6 +20,12 @@ ns.QUIET = 1.5
 -- How often a line from ns.ANY replaces the corpse's own lines.
 ns.ANY_CHANCE = 0.2
 
+-- Undead accents your comments can be spoken in (/dbd accent, per character), respelled live by Accent.lua:
+-- key -> name shown. In /e mode only the "quoted" comment is accented, not the bite; the corpse's name never is.
+ns.ACCENTS = { none = "no accent", locked = "locked jaw", jawless = "jawless" }
+ns.ACCENT_ORDER = { "none", "locked", "jawless" }
+ns.ACCENT_SAMPLE = "{name}. Tender, with a hint of surprise. Probably theirs."
+
 -- In /e mode the line is quoted after one of these: 'Grimbald chews thoughtfully. "Murloc. Salty."'
 ns.BITES = {
     "chews thoughtfully.",

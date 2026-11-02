@@ -4,6 +4,7 @@ self = false
 
 globals = {
     "DeadButDeliciousDB",
+    "DeadButDeliciousCharDB",
     "SLASH_DEADBUTDELICIOUS1",
     "SLASH_DEADBUTDELICIOUS2",
     "SLASH_DEADBUTDELICIOUS3",

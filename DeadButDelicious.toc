@@ -6,6 +6,9 @@
 ## IconTexture: Interface\Icons\Ability_Racial_Cannibalize
 ## X-Curse-Project-ID: 1776539
 ## SavedVariables: DeadButDeliciousDB
+## SavedVariablesPerCharacter: DeadButDeliciousCharDB
 
 Data.lua
+AccentRules.lua
+Accent.lua
 Core.lua
