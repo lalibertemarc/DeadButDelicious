@@ -387,6 +387,14 @@ local function SetAccent(arg)
     end
 end
 
+-- EzAccent's accent changed (EzAccentAPI): undead is the locked jaw, or jawless when thick; any other accent is none.
+local function FromEzAccent(accent, thick)
+    local key = accent == "undead" and (thick and "jawless" or "locked") or "none"
+    if DeadButDeliciousCharDB.accent == key then return end
+    DeadButDeliciousCharDB.accent = key
+    return "DeadButDelicious to " .. ns.ACCENTS[key]
+end
+
 local COMMANDS = {
     say =function() DeadButDeliciousDB.chat = "SAY"; Print("Comments go in /say.") end,
     emote = function() DeadButDeliciousDB.chat = "EMOTE"; Print("Comments go in /e.") end,
@@ -436,6 +444,7 @@ ev:SetScript("OnEvent", function(self, event, _, _, spellID)
             self:UnregisterAllEvents()
             return
         end
+        if EzAccentAPI then EzAccentAPI.OnAccentChanged(FromEzAccent) end
         ApplyPosition()
         for _, e in ipairs({ "PLAYER_TARGET_CHANGED", "SPELLS_CHANGED", "PLAYER_REGEN_ENABLED", "SPELL_UPDATE_COOLDOWN" }) do
             self:RegisterEvent(e)

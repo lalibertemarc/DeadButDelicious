@@ -24,4 +24,6 @@ read_globals = {
     -- Global APIs
     "GetBuildInfo", "GetCVar", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
     "UnitExists", "UnitCastingInfo", "UnitChannelInfo", "UnitIsDead", "UnitIsPlayer", "UnitCreatureType", "UnitName", "UnitRace", "SendChatMessage",
+    -- Other addons
+    "EzAccentAPI",
 }
