@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- **No more empty boasts.** Clicking the icon or key binding during the global cooldown, or while already casting or eating, no longer says a line without Cannibalize going out, and spam clicks get at most one comment every 3 seconds.
+- **No more empty boasts.** Clicking the icon or key binding during the global cooldown, or while already casting or eating, no longer says a line without Cannibalize going out, and spam clicks get at most one comment per global cooldown. A press queued in the last moments of the global cooldown, or while bandaging, still gets its line.
 
 ## v1.1.0
 

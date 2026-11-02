@@ -71,18 +71,32 @@ local function Cooldown()
     end
 end
 
--- A cooldown longer than minDuration and not over yet; 0 counts the global cooldown too.
--- Unknown (secret) counts as ready.
-local function CoolingDown(minDuration)
+-- Seconds before the global cooldown or a cast ends in which a press is queued and goes off when
+-- it ends (SpellQueueWindow, default 400 ms).
+local function QueueWindow()
+    local ms = C_CVar and C_CVar.GetCVar and C_CVar.GetCVar("SpellQueueWindow")
+    if not ms and GetCVar then ms = GetCVar("SpellQueueWindow") end
+    return (tonumber(ms) or 400) / 1000
+end
+
+-- A cooldown longer than minDuration with more than slack seconds left; minDuration 0 counts
+-- the global cooldown too. Unknown (secret) counts as ready.
+local function CoolingDown(minDuration, slack)
     local cd = Cooldown()
-    return cd and Safe(function() return cd.duration > minDuration and cd.startTime + cd.duration > GetTime() end) or false
+    return cd and Safe(function() return cd.duration > minDuration and cd.startTime + cd.duration - GetTime() > (slack or 0) end) or false
 end
 
 local function OnCooldown() return CoolingDown(1.5) end
 
--- Casting or channeling something (Cannibalize itself included): a click now casts nothing.
+-- A click now casts nothing: casting something not about to end, or already eating. Other
+-- channels (bandages, Drain Life) don't count: Cannibalize breaks them off.
 local function Busy()
-    return Safe(function() return (UnitCastingInfo("player") or UnitChannelInfo("player")) ~= nil end) or false
+    return Safe(function()
+        local _, _, _, _, endMS = UnitCastingInfo("player")
+        if endMS and endMS / 1000 - GetTime() > QueueWindow() then return true end
+        local channel, _, _, _, _, _, _, channelID = UnitChannelInfo("player")
+        return channel ~= nil and IsCannibalize(channelID)
+    end) or false
 end
 
 ---------------------------------------------------------------------------
@@ -182,11 +196,11 @@ end
 local spokeAt = -math.huge -- GetTime() of the last comment said aloud
 
 -- The cast will clearly fail (moving, on cooldown or the global cooldown, already casting,
--- corpse out of reach): nothing to comment on.
+-- corpse out of reach): nothing to comment on. A press in the spell queue window still casts.
 local function WillFail()
     local speed = GetUnitSpeed("player")
     if speed and not issecret(speed) and speed > 0 then return true end
-    if CoolingDown(0) or Busy() then return true end
+    if CoolingDown(0, QueueWindow()) or Busy() then return true end
     -- Duel range (~10 yd) is the closest check there is; Cannibalize needs 5.
     return Safe(function() return CheckInteractDistance("target", 3) == false end) or false
 end

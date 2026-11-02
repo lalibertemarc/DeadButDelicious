@@ -19,8 +19,8 @@ read_globals = {
     -- Frames & UI
     "CreateFrame", "UIParent", "TargetFrame", "GameTooltip", "DEFAULT_CHAT_FRAME", "ChatTypeInfo", "CHAT_SAY_GET",
     -- Namespaced APIs
-    "C_Spell", "C_Timer", "C_ChatInfo", "issecretvalue",
+    "C_Spell", "C_Timer", "C_ChatInfo", "C_CVar", "issecretvalue",
     -- Global APIs
-    "GetBuildInfo", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
+    "GetBuildInfo", "GetCVar", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
     "UnitExists", "UnitCastingInfo", "UnitChannelInfo", "UnitIsDead", "UnitIsPlayer", "UnitCreatureType", "UnitName", "UnitRace", "SendChatMessage",
 }
