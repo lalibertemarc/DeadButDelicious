@@ -222,7 +222,7 @@ local spokeAt = -math.huge -- GetTime() of the last comment said aloud
 -- corpse out of reach): nothing to comment on. A press in the spell queue window still casts.
 local function WillFail()
     local speed = GetUnitSpeed("player")
-    if speed and not issecret(speed) and speed > 0 then return true end
+    if not issecret(speed) and type(speed) == "number" and speed > 0 then return true end
     if CoolingDown(0, QueueWindow()) or Busy() then return true end
     -- Duel range (~10 yd) is the closest check there is; Cannibalize needs 5.
     return Safe(function() return CheckInteractDistance("target", 3) == false end) or false
