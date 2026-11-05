@@ -1,9 +1,10 @@
 # Dead But Delicious
 
-## Unreleased
+## v1.2.0
 
 - **Speak like the dead.** `/dbd accent locked` (or `jawless`) gives this character an undead accent: every comment comes out respelled as you say it, a little different each time. Locked jaw squeezes its vowels through clenched teeth and strains at the end: "Murluc. Chewy. I sweer it gurgled un the wey duwn. Mmf." Jawless slurs and gurgles: "Hhish Murloc Forager ish a hhish shtick 'ihh ohhinionsh. Ghhk." The corpse's name is never respelled, and in `/e` mode only the "quoted" comment is accented, not the bite. `/dbd accent` shows the current one with a sample, `/dbd accent none` turns it off. Takes effect right away, per character. The rules are the same as EzAccent's undead accents, and with EzAccent loaded, changing your accent there sets this one too (undead is locked jaw, undead thick is jawless, anything else is none); `/dbd accent` still changes Dead But Delicious' alone.
 - **No more empty boasts.** Clicking the icon or key binding during the global cooldown, or while already casting or eating, no longer says a line without Cannibalize going out, and spam clicks get at most one comment per global cooldown. A press queued in the last moments of the global cooldown, or while bandaging, still gets its line.
+- **No more errors on hidden speed.** Forever sometimes hides your speed from addons; the check that skips a comment while you move now handles it quietly.
 
 ## v1.1.0
 
