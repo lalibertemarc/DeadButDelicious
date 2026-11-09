@@ -51,6 +51,14 @@ end
 ---------------------------------------------------------------------------
 -- rules.respell: spelling swaps, then a strained sound at the end
 ---------------------------------------------------------------------------
+-- rules.shouted: the word around line[i..e] (letters and apostrophes) is in capitals and has two letters or more.
+local function Shouted(line, i, e)
+    while i > 1 and line:sub(i - 1, i - 1):find("[%a']") do i = i - 1 end
+    while e < #line and line:sub(e + 1, e + 1):find("[%a']") do e = e + 1 end
+    local w = line:sub(i, e)
+    return w:find("%a.*%a") ~= nil and not w:find("%l")
+end
+
 local function Respell(line, swaps)
     local low, out, i, n = line:lower(), {}, 1, #line
     while i <= n do
@@ -64,7 +72,9 @@ local function Respell(line, swaps)
         end
         if hit then
             local to = hit.to
-            if line:find("^%u", i) then
+            if Shouted(line, i, i + #hit.from - 1) then -- FOR THE HORDE -> HHOR HHE HORDE, not HhOR HhE
+                to = to:upper()
+            elseif line:find("^%u", i) then
                 local k = to:sub(1, 1) == "'" and 2 or 1
                 to = to:sub(1, k - 1) .. to:sub(k, k):upper() .. to:sub(k + 1)
             end
@@ -119,7 +129,8 @@ local function Stutter(line)
     end
     if #words == 0 then return line end
     local s, w = unpack(Pick(words))
-    return line:sub(1, s - 1) .. w:sub(1, 1) .. "-" .. w:sub(1, 1):lower() .. line:sub(s + 1)
+    local again = w:find("%l") and w:sub(1, 1):lower() or w:sub(1, 1) -- a shouted word stays shouted: H-HORDE
+    return line:sub(1, s - 1) .. w:sub(1, 1) .. "-" .. again .. line:sub(s + 1)
 end
 
 -- The odd s hisses through the teeth: jusst, thiss.
