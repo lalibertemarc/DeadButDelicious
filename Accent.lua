@@ -89,7 +89,8 @@ local function Respell(line, swaps)
 end
 
 -- rules.SOUND_AT_END, by hand: a line already ending in a gurgle or strain gets no second one.
-local SOUNDS = { "^gh+k+$", "^hh+r*k+$", "^hhh+$", "^n+gh$", "^m+f$", "^hk+$", "^nnn+$", "^sss+$" }
+local SOUNDS = { "^gh+k+$", "^hh+r*k+$", "^hhh+$", "^n+gh$", "^h?m+f$", "^hk+$", "^nnn+$", "^sss+$", "^t+s+$", "^k+t$",
+    "^k+h$", "^h?n+h$", "^m+h$", "^g?r+k$" }
 local function IsSound(word)
     if not word then return false end
     for _, p in ipairs(SOUNDS) do
@@ -104,6 +105,15 @@ local function EndsInSound(line)
     local head, tail = last:match("^([%w_]+)%-([%w_]+)$")
     if head then return IsSound(head) or IsSound(tail) end
     return IsSound(last)
+end
+
+-- rules.tuck: the sound tucked in before the line's last mark: "Huw ere yuu, mmf?"; after a full stop (or none) it
+-- trails off: "I em tired... nngh.".
+local function Tuck(line, sound)
+    local base, mark = line:match("^(.-)([.!?]+)$")
+    local word = sound:lower():gsub("%.+$", "")
+    if not base or mark == "." then return (base or line) .. "... " .. word .. "." end
+    return base .. ", " .. word .. mark
 end
 
 -- rules.drool: one of sounds at a comma (", ghk, ") or between two sentences (". Ghk. ").
@@ -162,8 +172,11 @@ function ns.Speak(accent, line, max)
         text = Drool(text, thick and ns.DROOLS or ns.CLENCHES)
     end
     local core = Restore(text, saved)
-    if EndsInSound(text) then return core end
-    local out = Restore(text .. " " .. Pick(thick and ns.GURGLES or ns.STRAINS), saved)
+    -- Jawless always ends on a gurgle; a locked jaw only STRAIN_CHANCE of the time, sometimes tucked in.
+    if EndsInSound(text) or not (thick or random() < ns.STRAIN_CHANCE) then return core end
+    local sound = Pick(thick and ns.GURGLES or ns.STRAINS)
+    local out = Restore((not thick and random() < ns.TUCK_CHANCE) and Tuck(text, sound) or text .. " " .. sound,
+        saved)
     if max and #out > max then return core end
     return out
 end
