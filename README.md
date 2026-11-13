@@ -18,12 +18,13 @@ The game only lets addons talk during a key press or click, so the comment goes 
 
 Cast Cannibalize from your own action bar and you still get a comment, but only you see it (it looks like your own `/say` line in your chat).
 
-On Forever, in dungeons and raids the addon stays out of it (no icon, no comments): the game hides what a corpse is there, so it can't tell a meal from a raptor. Cannibalize itself works as usual. Classic Era doesn't hide anything, so there it comments everywhere.
+On Forever, the game hides what a corpse is in dungeons and raids, so there your critic reviews the place instead of the meal: "Dungeon dining. The ambience is mostly screaming.", "Banquet for forty. I'm taking the leftovers.", and a few lines of its own for each classic dungeon and raid and each of Forever's new dungeons ("Deadmines. Mine-to-table dining.", "Ruins of Lordaeron. Home cooking. I used to live upstairs."). The icon shows while your target is dead; if the game hides even that, it stays hidden, but the key binding still comments out of combat. Classic Era doesn't hide anything, so there you get the corpse's own lines everywhere.
 
 ## What it knows
 
 - **Monsters** by name: murlocs, kobolds, gnolls, trolls, ogres, harpies, centaurs, quilboar, naga, furbolgs, troggs, goblins, gnomes, dwarves, orcs, tauren, night elves, the Defias, the Scarlet Crusade, pirates, the Syndicate, cultists, Forsaken, ghosts, skeletons and ghouls, plus a few famous names (Hogger, VanCleef, Herod).
 - **Players** by race.
+- **Dungeons and raids** on Forever: the place, not the corpse.
 - **Anything else** by type (Humanoid or Undead), and a "mystery meat" line when you cast from your bar with no corpse targeted.
 
 Edit every line, and the words that pick them, in `Data.lua`.

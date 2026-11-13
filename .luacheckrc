@@ -22,7 +22,7 @@ read_globals = {
     -- Namespaced APIs
     "C_Spell", "C_Timer", "C_ChatInfo", "C_CVar", "issecretvalue",
     -- Global APIs
-    "GetBuildInfo", "GetCVar", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
+    "GetBuildInfo", "GetInstanceInfo", "GetCVar", "GetSpellInfo", "GetSpellCooldown", "GetTime", "IsInInstance", "GetUnitSpeed", "CheckInteractDistance", "InCombatLockdown", "IsShiftKeyDown",
     "UnitExists", "UnitCastingInfo", "UnitChannelInfo", "UnitIsDead", "UnitIsPlayer", "UnitCreatureType", "UnitName", "UnitRace", "SendChatMessage",
     -- Other addons
     "EzAccentAPI",

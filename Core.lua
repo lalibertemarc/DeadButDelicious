@@ -123,17 +123,39 @@ local function Match(name)
 end
 
 -- Forever's dungeons and raids hide names and creature types from addons, so a beast can't be
--- told from a meal there: the addon stays out of them. Classic Era hides nothing.
-local function InDungeon()
-    if ns.ERA then return false end
+-- told from a meal there: "party" or "raid" there, nil elsewhere. Classic Era hides nothing.
+local function Instance()
+    if ns.ERA then return nil end
     local inInstance, kind = IsInInstance()
-    return inInstance and (kind == "party" or kind == "raid")
+    if inInstance and (kind == "party" or kind == "raid") then return kind end
+end
+
+-- Lines for a meal in instance kind: they review the place, not the corpse.
+local function VenueLines(kind)
+    local id = select(8, GetInstanceInfo())
+    local own = id and not issecret(id) and ns.VENUES[id]
+    if own and math.random() < ns.VENUE_CHANCE then return own end
+    return kind == "raid" and ns.RAID or ns.DUNGEON
+end
+
+-- In a dungeon or raid, any dead target is taken for a meal: { venue = kind }. If the game hides
+-- whether it's dead, still a meal out of combat (unsure: no icon), never in a fight.
+local function VenueMeal(unit, kind)
+    if not UnitExists(unit) then return nil end
+    local dead = UnitIsDead(unit)
+    if issecret(dead) then
+        if InCombatLockdown() then return nil end
+        return { venue = kind, unsure = true }
+    end
+    return dead and { venue = kind } or nil
 end
 
 -- The dead unit as a meal: { name, lines }, or nil when it isn't a corpse Cannibalize takes (or
--- the game won't say what it is).
+-- the game won't say what it is). In Forever's dungeons and raids: VenueMeal's.
 local function Corpse(unit)
-    if InDungeon() or not UnitExists(unit) then return nil end
+    local kind = Instance()
+    if kind then return VenueMeal(unit, kind) end
+    if not UnitExists(unit) then return nil end
     local dead = UnitIsDead(unit)
     if issecret(dead) or not dead then return nil end
     local ctype, name = UnitCreatureType(unit), UnitName(unit)
@@ -154,12 +176,20 @@ local last, lastAt
 
 local function TargetCorpse()
     local c = Corpse("target")
-    if c then last, lastAt = c, GetTime() end
+    if c and not c.venue then last, lastAt = c, GetTime() end
     return c
 end
 
 local function RecentCorpse()
     if last and GetTime() - lastAt <= ns.MEMORY then return last end
+end
+
+-- What you're eating as far as the addon knows: in a dungeon or raid the place, else your target
+-- or the last corpse you targeted (nil: unknown).
+local function Meal()
+    local kind = Instance()
+    if kind then return { venue = kind } end
+    return Corpse("target") or RecentCorpse()
 end
 
 ---------------------------------------------------------------------------
@@ -198,7 +228,7 @@ end
 -- The comment on corpse c (nil: unknown), and the chat type it goes in. In /e the bite is narration and stays
 -- plain; only the "quoted" comment has an accent.
 local function Comment(c)
-    local lines = (c and c.lines) or ns.MYSTERY
+    local lines = c and (c.venue and VenueLines(c.venue) or c.lines) or ns.MYSTERY
     if math.random() < ns.ANY_CHANCE then lines = ns.ANY end
     local name = c and c.name or "This"
     if DeadButDeliciousDB.chat == "EMOTE" then
@@ -245,9 +275,8 @@ local hinted -- the "only you heard that" hint was shown this session
 -- Cannibalize started without a comment said aloud (cast from your bar, private mode, chat
 -- locked): comment to yourself.
 local function OnChannelStart(spellID)
-    if not IsCannibalize(spellID) or GetTime() - spokeAt < 3 or InDungeon() then return end
-    local c = Corpse("target") or RecentCorpse()
-    Echo(Comment(c))
+    if not IsCannibalize(spellID) or GetTime() - spokeAt < 3 then return end
+    Echo(Comment(Meal()))
     if not DeadButDeliciousDB.private and not hinted then
         hinted = true
         Print("Only you heard that. Cannibalize with the Dead But Delicious key binding, its icon or /click DeadButDeliciousButton to say it aloud.")
@@ -341,7 +370,8 @@ btn:SetScript("OnEnter", function(self)
     local c = Corpse("target")
     if not c then return end
     GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-    GameTooltip:AddLine("Cannibalize " .. c.name, 1, 0.82, 0)
+    GameTooltip:AddLine(c.name and ("Cannibalize " .. c.name) or "Cannibalize", 1, 0.82, 0)
+    if c.venue then GameTooltip:AddLine("The game hides what it is here: you'll review the place", 0.6, 0.6, 0.6) end
     GameTooltip:AddLine("Click to eat, and comment " .. Where(), 1, 1, 1)
     GameTooltip:AddLine("Key binding: Options > Keybindings > Dead But Delicious", 0.6, 0.6, 0.6)
     GameTooltip:AddLine("Shift-drag to move", 0.6, 0.6, 0.6)
@@ -351,7 +381,7 @@ btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
 local function Update()
     local c = TargetCorpse()
-    local show = c ~= nil and spell.name ~= nil
+    local show = c ~= nil and not c.unsure and spell.name ~= nil
     btn:SetAlpha(show and 1 or 0)
     if not InCombatLockdown() then btn:EnableMouse(show) end
     if show then btn.icon:SetDesaturated(OnCooldown()) end
@@ -404,7 +434,7 @@ local COMMANDS = {
     end,
     accent = SetAccent,
     test = function()
-        Echo(Comment(Corpse("target") or RecentCorpse()))
+        Echo(Comment(Meal()))
     end,
     reset = function()
         if InCombatLockdown() then return Print("Can't move the icon in combat.") end

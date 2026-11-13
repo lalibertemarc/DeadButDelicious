@@ -1,5 +1,9 @@
 # Dead But Delicious
 
+## Unreleased
+
+- **A table in every dungeon.** On Forever your critic no longer goes quiet in dungeons and raids. The game still hides what a corpse is there, so instead of the meal it reviews the place: "Dungeon dining. The ambience is mostly screaming." In raids: "Banquet for forty. I'm taking the leftovers." Every classic dungeon and raid has a few lines of its own, from the Deadmines ("Mine-to-table dining.") to Naxxramas, and so do Forever's new ones, from the Hall of Thanes to Manor Mistmantle ("Ruins of Lordaeron. Home cooking. I used to live upstairs."). The icon shows while your target is dead, and casts from your bar comment to you as before.
+
 ## v1.2.0
 
 - **Speak like the dead.** `/dbd accent locked` (or `jawless`) gives this character an undead accent: every comment comes out respelled as you say it, a little different each time. Locked jaw squeezes its vowels through clenched teeth and strains at the end: "Murluc. Chewy. I sweer it gurgled un the wey duwn. Mmf." Jawless slurs and gurgles: "Hhish Murloc Forager ish a hhish shtick 'ihh ohhinionsh. Ghhk." The corpse's name is never respelled, and in `/e` mode only the "quoted" comment is accented, not the bite. `/dbd accent` shows the current one with a sample, `/dbd accent none` turns it off. Takes effect right away, per character. The rules are the same as EzAccent's undead accents, and with EzAccent loaded, changing your accent there sets this one too (undead is locked jaw, undead thick is jawless, anything else is none); `/dbd accent` still changes Dead But Delicious' alone.

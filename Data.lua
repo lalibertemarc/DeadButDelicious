@@ -520,3 +520,207 @@ ns.ANY = {
     "Not my best meal, not my worst.",
     "Dinner and a show. The show was the killing.",
 }
+
+---------------------------------------------------------------------------
+-- Dungeons and raids (Forever): the game hides what a corpse is there, so these review the
+-- place, not the meal. No {name}: they must fit whatever you eat. Classic Era hides nothing and
+-- keeps the lines above.
+---------------------------------------------------------------------------
+-- How often a line from the instance's own pool (ns.VENUES) is used instead of the general one.
+ns.VENUE_CHANCE = 0.4
+
+ns.DUNGEON = {
+    "Dungeon dining. The ambience is mostly screaming.",
+    "Fine dining, underground. Bring your own torch.",
+    "The service here is murderous. Four stars.",
+    "Table for five, and the locals came to us.",
+    "Fresh from the pull. You can't get closer to the source.",
+    "The tank does the carving. I just do the tasting.",
+    "Lovely spot. A bit damp. The staff keep attacking.",
+    "No menu, no prices, all you can eat. My kind of place.",
+    "Eat between pulls. That's the chef's rule.",
+    "The healer says I can't eat that. The healer is wrong.",
+    "Corridor cuisine. Narrow, dark, and full of flavor.",
+    "Every room's a new course. Pace yourselves.",
+    "Who needs a tavern? This place delivers, in waves.",
+    "Hold the next pull. I'm on the second course.",
+    "Don't wait for me. I'll catch up once I've cleared my plate.",
+    "Tasting menu, one room at a time.",
+}
+
+ns.RAID = {
+    "Banquet for forty. I'm taking the leftovers.",
+    "Raid night. The buffet never ends.",
+    "Forty of us, and I'm the only one eating. More for me.",
+    "Loot is shared, they said. Nobody said anything about dinner.",
+    "Catering for an army. Literally.",
+    "Big room, big crowd, big appetite.",
+    "Wipe or win, someone gets eaten tonight.",
+    "Raid dining. Huge portions, long wait between courses.",
+    "So much to choose from. One of everything, please.",
+    "Save me a seat at the next boss. I'm still on trash.",
+}
+
+-- An instance's own lines, by instance ID (GetInstanceInfo's 8th return = Map.db2 ID; checked in
+-- Forever's Map.db2 on wago.tools, 2026-11-13). An unknown ID only means the general lines.
+local RAZORFEN = {
+    "Razorfen. Thorny place. The meat comes tenderized by brambles.",
+    "Razorfen. Everything here has spines. Except dinner, luckily.",
+}
+local SPIRE = {
+    "Blackrock Spire. A tall order, and I'm eating every floor.",
+    "Blackrock Spire. Orc kitchen, dragon landlord. Busy place.",
+}
+local AQ = {
+    "Ahn'Qiraj. Everything here is a bug. I'll stick to the staff.",
+    "Ahn'Qiraj. Sand in every bite. Desert dining.",
+}
+ns.VENUES = {
+    [36] = {
+        "Deadmines. Mine-to-table dining.",
+        "The Deadmines. Everything tastes of coal dust and grudges.",
+        "Deadmines. Every meal here comes with a hard hat.",
+        "The Deadmines. Came for the ship, stayed for the buffet.",
+    },
+    [43] = {
+        "Wailing Caverns. The wailing is mostly me, chewing.",
+        "Wailing Caverns. Damp, green and full of dreams. Hold the dreams.",
+        "Wailing Caverns. Everything here was asleep. Now it's lunch.",
+    },
+    [33] = {
+        "Shadowfang Keep. Silverpine's finest castle kitchen.",
+        "Shadowfang Keep. Old manor, old meat, very old wine cellar.",
+        "Shadowfang Keep. Mind the worgen hair in the soup.",
+    },
+    [34] = {
+        "The Stockade. Prison food, but I'm not complaining.",
+        "The Stockade. Locked up and served. Room service.",
+    },
+    [389] = {
+        "Ragefire Chasm. Everything comes pre-grilled.",
+        "Ragefire Chasm. Lovely heat. The meat's practically smoked.",
+    },
+    [48] = {
+        "Blackfathom Deeps. The seafood bar is open.",
+        "Blackfathom Deeps. Waterlogged, but the view is lovely.",
+    },
+    [90] = {
+        "Gnomeregan. Faint notes of oil and radiation.",
+        "Gnomeregan. Everything here glows a little. Extra seasoning.",
+    },
+    [47] = RAZORFEN,
+    [129] = RAZORFEN,
+    [189] = {
+        "Scarlet Monastery. They kept a pious kitchen. I keep a hungry one.",
+        "The Monastery. They swore to purge my kind. It's going the other way.",
+        "Scarlet Monastery. Holy water marinade. Stings a little.",
+    },
+    [70] = {
+        "Uldaman. Older than the menu. Older than the restaurant.",
+        "Uldaman. Dusty, but the kitchen's been here for ages.",
+    },
+    [209] = {
+        "Zul'Farrak. Sun-dried. A desert delicacy.",
+        "Zul'Farrak. Bring water. Everything here is so salty.",
+    },
+    [349] = {
+        "Maraudon. Purple, damp and oddly floral.",
+        "Maraudon. The garden salad bites back.",
+    },
+    [109] = {
+        "The Sunken Temple. A swamp-to-table experience.",
+        "Sunken Temple. Everything's soggy. Very authentic.",
+    },
+    [230] = {
+        "Blackrock Depths. Hot kitchen, Dark Iron cooks, and a bar. I'm never leaving.",
+        "Blackrock Depths. Pairs nicely with a Dark Iron ale.",
+    },
+    [429] = {
+        "Dire Maul. Ogre catering, elven architecture. Odd combination.",
+        "Dire Maul. Ruined palace, ruined meal. Still eating it.",
+    },
+    [289] = {
+        "Scholomance. Back to school. The cafeteria hasn't changed.",
+        "Scholomance. I took a class here once. The teacher was delicious.",
+    },
+    [329] = {
+        "Stratholme. Home cooking. Literally, for some of us.",
+        "Stratholme. The grain was bad, the meat is worse. I love it.",
+    },
+    [229] = SPIRE,
+    [409] = {
+        "Molten Core. Everything is well done. Far too well done.",
+        "Molten Core. The kitchen's on fire, and that's the decor.",
+    },
+    [249] = {
+        "Onyxia's Lair. All these whelps, and none of them my type.",
+        "Onyxia's Lair. Dragon on the menu, but I'm stuck with the help.",
+    },
+    [469] = {
+        "Blackwing Lair. Dragons upstairs, staff meals down here.",
+        "Blackwing Lair. Smoky, scaly, and a long wait for a table.",
+    },
+    [309] = {
+        "Zul'Gurub. Jungle cuisine. The blood god's leftovers.",
+        "Zul'Gurub. Spicy. Everything here was soaked in mojo.",
+    },
+    [509] = AQ,
+    [531] = AQ,
+    [533] = {
+        "Naxxramas. Dinner at the old family home.",
+        "Naxxramas. Kel'Thuzad never fed us this well.",
+        "Naxxramas. The Scourge's own kitchen. I know the recipes.",
+    },
+
+    -- New in Forever
+    [3065] = {
+        "The Hall of Thanes. Dining among dwarven kings. They're past minding.",
+        "Hall of Thanes. The robbers took the gold and left the good stuff.",
+        "Hall of Thanes. Royal tomb, royal portions.",
+    },
+    [2999] = {
+        "Ruins of Lordaeron. Home cooking. I used to live upstairs.",
+        "Lordaeron. The old capital still serves a fine Scourge.",
+        "Ruins of Lordaeron. Eating on the throne room floor. Arthas would be appalled. Good.",
+    },
+    [2998] = {
+        "Excavation Site. Some of this meat is older than the dig.",
+        "The dig site. They came for relics. I came for lunch.",
+        "Excavation Site. Untouched by time, and now touched by me.",
+    },
+    [2959] = {
+        "Dalaran. Everything tastes faintly arcane. Like licking a wand.",
+        "Dalaran. The spells run wild, and so does my appetite.",
+        "City of Dalaran. I hope this one wasn't a sheep five minutes ago.",
+    },
+    [2970] = {
+        "The Drowned City. Surf and turf, mostly surf.",
+        "Drowned City. Old troll ruins, salted fresh by the sea.",
+        "The Drowned City. Seaweed garnish on everything.",
+    },
+    [3039] = {
+        "Krol'dok Stronghold. Ogre portions. I approve.",
+        "Krol'dok. The ogres kept captives for the pot. I'm only following the house recipe.",
+        "Krol'dok Stronghold. Big kitchen, bigger cooks.",
+    },
+    [2994] = {
+        "Alcaz Prison. Defias and naga on the same menu. Fusion cuisine.",
+        "Alcaz Prison. Prison food again. I keep ending up in these places.",
+        "Alcaz. Damp cells, salty guests.",
+    },
+    [2974] = {
+        "Blackmaw Hold. Something's off here. Even I can taste it.",
+        "Blackmaw Hold. Corrupted, they say. I say aged.",
+        "Blackmaw Hold. Furry, gamey and a bit sick. Like home.",
+    },
+    [3001] = {
+        "The Shaper's Terrace. Titan stonework, a view over Un'Goro. Five stars for the setting.",
+        "Shaper's Terrace. The crystals hum while I eat. Dinner music.",
+        "Shaper's Terrace. Everything here was shaped once. Now I'm reshaping it.",
+    },
+    [3109] = {
+        "Manor Mistmantle. Duskwood's finest haunted dining room.",
+        "Mistmantle. Lovely old house. The host is a bit possessive.",
+        "Manor Mistmantle. Candlelit, cobwebbed, and nobody's coming back for the dishes.",
+    },
+}
