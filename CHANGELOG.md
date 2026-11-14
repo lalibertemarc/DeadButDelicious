@@ -1,5 +1,9 @@
 # Dead But Delicious
 
+## v1.3.1
+
+- Listed under **Roleplay** in the game's AddOns list, next to other roleplay addons.
+
 ## v1.3.0
 
 - **A table in every dungeon.** On Forever your critic no longer goes quiet in dungeons and raids. The game still hides what a corpse is there, so instead of the meal it reviews the place: "Dungeon dining. The ambience is mostly screaming." In raids: "Banquet for forty. I'm taking the leftovers." Every classic dungeon and raid has a few lines of its own, from the Deadmines ("Mine-to-table dining.") to Naxxramas, and so do Forever's new ones, from the Hall of Thanes to Manor Mistmantle ("Ruins of Lordaeron. Home cooking. I used to live upstairs."). The icon shows while your target is dead, and casts from your bar comment to you as before.
