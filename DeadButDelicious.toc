@@ -3,6 +3,17 @@
 ## Notes: Undead food critic. Comment on every corpse you Cannibalize, in /say.
 ## Author: Marc
 ## Version: @project-version@
+## Category: Roleplay
+## Category-deDE: Rollenspiel
+## Category-esES: Juego de rol
+## Category-esMX: Juego de rol
+## Category-frFR: Jeu de rôle
+## Category-itIT: Gioco di Ruolo
+## Category-koKR: 롤플레잉
+## Category-ptBR: Interpretação de Papel
+## Category-ruRU: Ролевая игра
+## Category-zhCN: 角色扮演
+## Category-zhTW: 角色扮演
 ## IconTexture: Interface\Icons\Ability_Racial_Cannibalize
 ## X-Curse-Project-ID: 1776539
 ## SavedVariables: DeadButDeliciousDB
