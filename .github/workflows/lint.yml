@@ -20,3 +20,4 @@ jobs:
         with:
           luaVersion: "5.1.5"
       - run: lua tests/flesh.lua
+      - run: lua tests/lines.lua

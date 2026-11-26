@@ -20,6 +20,7 @@
 ## SavedVariablesPerCharacter: DeadButDeliciousCharDB
 
 Data.lua
+Locales\frFR.lua
 AccentRules.lua
 Accent.lua
 Core.lua

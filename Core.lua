@@ -234,6 +234,40 @@ local function Meal()
 end
 
 ---------------------------------------------------------------------------
+-- Language: lines in the client's language come from ns.TRANSLATION (Locales\<locale>.lua), which
+-- only that client keeps. English lines stay loaded for /dbd language english.
+---------------------------------------------------------------------------
+local TR = {} -- English lines table -> the same lines in ns.TRANSLATION
+do
+    local T = ns.TRANSLATION
+    if T then
+        local function Map(en, tr) if en and tr then TR[en] = tr end end
+        Map(ns.BITES, T.bites)
+        Map(ns.MYSTERY, T.mystery)
+        Map(ns.ANY, T.any)
+        Map(ns.DUNGEON, T.dungeon)
+        Map(ns.RAID, T.raid)
+        for _, f in ipairs(ns.FLESH) do Map(f.lines, T.flesh and T.flesh[f.words[1]]) end
+        for k, lines in pairs(ns.RACES) do Map(lines, T.races and T.races[k]) end
+        for k, lines in pairs(ns.TYPES) do Map(lines, T.types and T.types[k]) end
+        for id, lines in pairs(ns.VENUES) do Map(lines, T.venues and T.venues[id]) end
+    end
+end
+
+-- Comments in the client's language: it has lines and you didn't pick English (/dbd language).
+local function Translating()
+    return ns.TRANSLATION ~= nil and DeadButDeliciousDB.lang ~= "en"
+end
+
+-- lines in the language you speak, and true if translated (the accent's rules are English: no accent).
+-- A group the translation lacks stays English.
+local function Localized(lines)
+    local tr = Translating() and TR[lines]
+    if tr then return tr, true end
+    return lines, false
+end
+
+---------------------------------------------------------------------------
 -- Comments
 ---------------------------------------------------------------------------
 local lastPick = {} -- lines table -> index said last time
@@ -260,10 +294,12 @@ local function Accented(line, name, max)
     return #text <= max and text or line
 end
 
--- Line with {name} filled in, in your accent; room: bytes left for it in the message.
-local function Say(line, name, room)
+-- Line with {name} filled in, in your accent unless plain (a translated line); room: bytes left for it in
+-- the message.
+local function Say(line, name, room, plain)
+    if not plain then line = Accented(line, name, room) end
     -- Function replacement, so a "%" in a name can't break gsub. The name goes in after the accent.
-    return (Accented(line, name, room):gsub("{name}", function() return name end))
+    return (line:gsub("{name}", function() return name end))
 end
 
 -- The comment on corpse c (nil: unknown), and the chat type it goes in. In /e the bite is narration and stays
@@ -271,12 +307,14 @@ end
 local function Comment(c)
     local lines = c and (c.venue and VenueLines(c.venue) or c.lines) or ns.MYSTERY
     if math.random() < ns.ANY_CHANCE then lines = ns.ANY end
+    local translated
+    lines, translated = Localized(lines)
     local name = c and c.name or "This"
     if DeadButDeliciousDB.chat == "EMOTE" then
-        local bite = Pick(ns.BITES)
-        return format('%s "%s"', bite, Say(Pick(lines), name, MAX_MESSAGE - #bite - 3)), "EMOTE"
+        local bite = Pick((Localized(ns.BITES)))
+        return format('%s "%s"', bite, Say(Pick(lines), name, MAX_MESSAGE - #bite - 3, translated)), "EMOTE"
     end
-    return Say(Pick(lines), name, MAX_MESSAGE), "SAY"
+    return Say(Pick(lines), name, MAX_MESSAGE, translated), "SAY"
 end
 
 -- Prints the comment as if said, for your eyes only.
@@ -442,6 +480,37 @@ local HELP = {
     "/dbd test - taste your target (or the last corpse), only you see it",
     "/dbd reset - reset the icon position",
 }
+if ns.TRANSLATION then
+    table.insert(HELP, 4, "/dbd language [auto|english|" .. ns.TRANSLATION.name:lower() .. "] - the language your comments are in")
+end
+
+-- The accent's rules are English: says so when it won't be heard.
+local function AccentNote()
+    if Translating() and DeadButDeliciousCharDB.accent ~= "none" then
+        Print("Your accent only respells English lines: /dbd language english to hear it.")
+    end
+end
+
+-- Shows the language your comments are in, or sets it (arg: auto, english, or the client's language by
+-- its English or own name, or code), with a sample said only to you.
+local function SetLanguage(arg)
+    local T = ns.TRANSLATION
+    if not T then return Print("Comments are in English: there are no lines in your game's language yet.") end
+    if arg == "english" or arg == "en" then
+        DeadButDeliciousDB.lang = "en"
+    elseif arg == "auto" or arg == T.code or arg == T.name:lower() or arg == T.native then
+        DeadButDeliciousDB.lang = nil
+    elseif arg ~= "" then
+        return Print("Languages: auto, english, " .. T.name:lower() .. ".")
+    end
+    if Translating() then
+        Print("Comments are in " .. T.name .. ". /dbd language english for English.")
+        Print("Sample: " .. Say(T.sample, T.sampleName, MAX_MESSAGE, true))
+        AccentNote()
+    else
+        Print("Comments are in English. /dbd language " .. T.name:lower() .. " for " .. T.name .. ".")
+    end
+end
 
 -- Shows your accent, or sets it (arg: a key of ns.ACCENTS or its name, "locked jaw"), with a sample said only to you.
 local function SetAccent(arg)
@@ -457,6 +526,7 @@ local function SetAccent(arg)
     Print("Accent: " .. ns.ACCENTS[accent] .. (arg == "" and " (/dbd accent " .. table.concat(ns.ACCENT_ORDER, "|") .. ")" or "."))
     if accent ~= "none" then
         Print("Sample: " .. Say(ns.ACCENT_SAMPLE, "Murloc Forager", MAX_MESSAGE))
+        AccentNote()
     end
 end
 
@@ -476,6 +546,8 @@ local COMMANDS = {
         Print(DeadButDeliciousDB.private and "Comments are for your ears only." or ("Comments go " .. Where() .. " again."))
     end,
     accent = SetAccent,
+    language = SetLanguage,
+    lang = SetLanguage,
     test = function()
         Echo(Comment(Meal()))
     end,

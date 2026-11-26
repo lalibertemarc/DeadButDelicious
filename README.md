@@ -29,6 +29,12 @@ On Forever, the game hides what a corpse is in dungeons and raids, so there your
 
 Edit every line, and the words that pick them, in `Data.lua`.
 
+## In French
+
+On a French client your critic speaks French: every line has its own French version, in `Locales/frFR.lua` ("Murloc. Salé, avec une finale iodée. Mrglrgl à toi aussi !"). `/dbd language english` switches back to the English lines, `/dbd language auto` (or `french`) to the client's again. The undead accent only respells English lines, so French comments are said plain.
+
+Only your own client's language is kept in memory: every other client stops reading the file at its first line.
+
 ## Undead accent
 
 `/dbd accent locked` or `jawless` respells every comment as you say it, a little different each time, in a locked jaw ("Murluc. Chewy. I sweer it gurgled un the wey duwn. Mmf.") or a jawless slur ("Hhish Murloc Forager ish a hhish shtick 'ihh ohhinionsh. Ghhk."). Per character, off by default, and it takes effect right away. With [EzAccent](../EzAccent) loaded, changing your accent there sets this one too (undead is locked jaw, thick undead is jawless, any other accent is none); `/dbd accent` still sets Dead But Delicious' alone. The corpse's name is left alone, and in `/e` mode only the "quoted" comment is accented, not the bite before it. Comments only you see (`/dbd test`, casts from your bar, private mode) get the accent too.
@@ -45,6 +51,7 @@ Use `/dbd` or `/deadbutdelicious` (`/cannibal` and `/foodcritic` work too).
 | `/dbd emote` | Comment as an `/e` emote: *Grimbald chews thoughtfully. "Murloc. Salty."* |
 | `/dbd private` | Toggle: every comment is for your eyes only |
 | `/dbd accent [none\|locked\|jawless]` | Show or set this character's undead accent (locked jaw, jawless), with a sample |
+| `/dbd language [auto\|english\|french]` | French clients: comment in French (default) or English |
 | `/dbd test` | Taste your target (or the last corpse) without eating it, only you see it |
 | `/dbd reset` | Reset the icon position (Shift-drag moves it) |
 

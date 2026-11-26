@@ -1,5 +1,10 @@
 # Dead But Delicious
 
+## v1.4.0
+
+- **Le critique parle français.** On a French client every comment now comes in French, from the murloc ("Salé, avec une finale iodée. Mrglrgl à toi aussi !") to Naxxramas, and so do the `/e` bites. `/dbd language english` keeps the English lines if you prefer them, `/dbd language auto` goes back. The undead accent only respells English lines, so French comments are said plain.
+- Only your game's language is kept in memory: the French lines cost nothing on any other client.
+
 ## v1.3.2
 
 - **Works in every language.** On a French, German, Spanish or any other non-English client, corpses were never recognised: no icon beside the target frame, and Cannibalize only commented to you instead of in `/say`. Fixed.
