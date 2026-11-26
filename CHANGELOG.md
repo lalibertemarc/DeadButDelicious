@@ -1,5 +1,12 @@
 # Dead But Delicious
 
+## v1.3.2
+
+- **Works in every language.** On a French, German, Spanish or any other non-English client, corpses were never recognised: no icon beside the target frame, and Cannibalize only commented to you instead of in `/say`. Fixed.
+- **Knows its meals in French, German, Spanish, Italian, Portuguese and Russian.** A "Bandit défias", a "Skelettkrieger" or a "Flibustier des Mers du sud" now gets its own lines (Defias, skeleton, pirate…) instead of the generic ones. Accents and capitals no longer get in the way. The comments themselves are still in English.
+- Twilight's Hammer members are now on the cultist menu.
+- The private comment you see when eating from your action bar now shows your full name, as your real `/say` does.
+
 ## v1.3.1
 
 - Listed under **Roleplay** in the game's AddOns list, next to other roleplay addons.

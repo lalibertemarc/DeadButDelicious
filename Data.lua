@@ -8,8 +8,12 @@ ns.ERA = select(4, GetBuildInfo()) < 16000
 ns.CANNIBALIZE_ID = 20577
 ns.CANNIBALIZE_NAME = "Cannibalize"
 
--- Corpse types Cannibalize accepts (UnitCreatureType, English client).
+-- Corpse types Cannibalize accepts, by their English name (the keys of ns.TYPES).
 ns.EDIBLE = { Humanoid = true, Undead = true }
+
+-- UnitCreatureType's name is in the client's language ("Humanoïde"); its 2nd return, the
+-- CreatureType ID, isn't. ID -> English name.
+ns.TYPE_IDS = { [6] = "Undead", [7] = "Humanoid" }
 
 -- Seconds a corpse you targeted is remembered after you lose the target (for casts from your bar).
 ns.MEMORY = 60
@@ -429,7 +433,7 @@ ns.FLESH = {
     { words = { "bloodsail", "southsea", "pirate", "buccaneer", "swashbuckler", "corsair" }, lines = PIRATE },
     { words = { "syndicate" }, lines = SYNDICATE },
     { words = { "quilboar", "razormane", "bristleback", "death's head" }, lines = QUILBOAR }, -- before cultists: Death's Head Acolyte
-    { words = { "cultist", "cult", "necromancer", "acolyte" }, lines = CULTIST },
+    { words = { "cultist", "cult", "necromancer", "acolyte", "twilight" }, lines = CULTIST },
     { words = { "forsaken", "deathguard" }, lines = FORSAKEN },
     { words = { "ghost", "ghostly", "spirit", "spectre", "specter", "spectral", "phantom", "banshee", "wraith",
         "apparition", "haunt", "shade", "poltergeist" }, lines = GHOST },
@@ -454,6 +458,150 @@ ns.FLESH = {
     { words = { "tauren", "grimtotem" }, lines = TAUREN },
     { words = { "night elf", "sentinel" }, lines = NIGHTELF },
 }
+
+-- Corpse names on other clients (GetLocale()), added to the ns.FLESH entry whose first word is the key; the
+-- English words still count (many names keep them: "Murloc", "Gnoll"). Case and accents don't matter (Fold
+-- in Core: "Défias" is "defias"). These match at the start of a word, so a stem finds every ending and German
+-- compounds ("skelett" -> "Skelettkrieger"); end one with "$" to match the whole word only. Best guesses at
+-- each language's names: a miss only means the corpse gets its type's lines.
+ns.FLESH_LOCALE = {
+    frFR = {
+        hogger = { "lardeur" }, herod = { "hérode" },
+        scarlet = { "écarlate" },
+        bloodsail = { "voile sanglante", "mers du sud", "boucanier", "flibustier", "corsaire", "bretteur" },
+        syndicate = { "syndicat" },
+        quilboar = { "huran", "tranchecrin", "tête de mort" },
+        cultist = { "cultiste", "culte", "nécromancien", "acolyte", "crépuscul" },
+        forsaken = { "réprouvé", "garde de la mort" },
+        ghost = { "fantôm", "esprit", "spectr", "âme en peine", "apparition", "poltergeist" },
+        skeleton = { "squelett", "crâne" },
+        ghoul = { "goule", "zombi", "pourri", "putride", "abomination", "momie", "momifi", "ressuscité" },
+        kobold = { "rat des tunnels" },
+        gnoll = { "rivepatte" },
+        troll = { "vilebranche", "sombrelance", "givrecrin" },
+        centaur = { "centaure" },
+        furbolg = { "grumegueule" },
+        goblin = { "gobelin", "kapitalrisque" },
+        gnome = { "gnome lépreux" },
+        dwarf = { "nain", "sombrefer", "marteau-hardi", "montagnard" },
+        orc = { "rochenoire", "gueule-de-dragon" },
+        tauren = { "totem-sinistre" },
+        ["night elf"] = { "elfe de la nuit", "sentinelle" },
+    },
+    deDE = {
+        defias = { "defias" },
+        scarlet = { "scharlachrot" },
+        bloodsail = { "pirat", "blutsegel", "südmeer", "freibeuter", "korsar", "bukanier" },
+        syndicate = { "syndikat" },
+        quilboar = { "stacheleber", "klingenmähne", "borstennacken", "todeskopf" },
+        cultist = { "kult", "nekromant", "akolyth", "schattenhammer" },
+        forsaken = { "verlassen", "todeswache" },
+        ghost = { "geist", "gespenst", "phantom", "banshee", "erscheinung", "spuk" },
+        skeleton = { "skelett", "knochen", "schädel" },
+        ghoul = { "ghul", "zombie", "verrott", "faulend", "monstrosität", "mumie", "auferstanden" },
+        murloc = { "murloc" },
+        kobold = { "kobold", "tunnelratte" },
+        gnoll = { "gnoll", "flusspfote" },
+        troll = { "troll", "gurubashi", "hakkari", "dunkelspeer", "frostmähne" },
+        ogre = { "oger", "gordok" },
+        harpy = { "harpyie" },
+        centaur = { "zentaur", "kolkar", "galak", "maraudine", "gelkis", "magram" },
+        naga = { "naga" },
+        furbolg = { "furbolg", "holzschlund" },
+        trogg = { "trogg" },
+        goblin = { "goblin", "venture" },
+        gnome = { "gnom", "lepragnom" },
+        dwarf = { "zwerg", "dunkeleisen", "wildhammer" },
+        orc = { "ork", "schwarzfels", "drachenmal" },
+        tauren = { "taure", "grimmtotem" },
+        ["night elf"] = { "nachtelf", "schildwache" },
+    },
+    esES = {
+        scarlet = { "escarlata" },
+        bloodsail = { "pirata", "velasangre", "mares del sur", "bucanero", "espadach", "corsario", "filibustero" },
+        syndicate = { "sindicato" },
+        quilboar = { "jabaespín" },
+        cultist = { "cultista", "culto", "nigromante", "acólito", "crepuscular" },
+        forsaken = { "renegad", "guardia de la muerte" },
+        ghost = { "fantasma", "espíritu", "espectr", "alma en pena", "aparición" },
+        skeleton = { "esquelet", "hueso", "calavera", "cráneo" },
+        ghoul = { "necrófago", "zombi", "putrefact", "podrid", "abominación", "momia", "momificad", "resucitad" },
+        kobold = { "rata de túnel" },
+        troll = { "trol", "lanza negra" },
+        ogre = { "ogro" },
+        harpy = { "arpía" },
+        centaur = { "centauro" },
+        goblin = { "ventura" },
+        gnome = { "gnomo" },
+        dwarf = { "enano", "enana", "hierro negro", "martillo salvaje", "montañero" },
+        orc = { "orco", "roca negra", "faucedraco" },
+        tauren = { "tótem siniestro" },
+        ["night elf"] = { "elfo de la noche", "elfa de la noche", "centinela" },
+    },
+    itIT = {
+        scarlet = { "scarlatt" },
+        bloodsail = { "pirata", "mari del sud", "bucaniere", "corsaro" },
+        syndicate = { "sindacato" },
+        cultist = { "cultista", "culto", "negromante", "accolito", "crepuscol" },
+        forsaken = { "reiett" },
+        ghost = { "fantasma", "spirito", "spettr" },
+        skeleton = { "scheletr", "teschio" },
+        ghoul = { "zombi", "abominio", "mummia", "putrescent" },
+        harpy = { "arpia" },
+        centaur = { "centauro" },
+        gnome = { "gnomo" },
+        dwarf = { "nano$", "nana$", "nani$" },
+        ["night elf"] = { "elfo della notte", "sentinella" },
+    },
+    ptBR = {
+        scarlet = { "escarlate" },
+        bloodsail = { "pirata", "mares do sul", "bucaneiro", "corsário" },
+        syndicate = { "sindicato" },
+        quilboar = { "javaliço" },
+        cultist = { "cultista", "culto", "necromante", "acólito", "crepuscular" },
+        forsaken = { "renegad" },
+        ghost = { "fantasma", "espírito", "espectr", "aparição" },
+        skeleton = { "esquelet", "caveira", "crânio" },
+        ghoul = { "carniçal", "zumbi", "abominação", "múmia", "putrefat" },
+        troll = { "trol" },
+        ogre = { "ogro" },
+        harpy = { "harpia" },
+        centaur = { "centauro" },
+        gnome = { "gnomo" },
+        dwarf = { "anão", "anã$" },
+        ["night elf"] = { "elfo noturno", "elfa noturna", "sentinela" },
+    },
+    ruRU = {
+        hogger = { "хоггер" }, vancleef = { "ванклиф" },
+        defias = { "справедливост" },
+        scarlet = { "алого$", "алый$", "алая$", "алое$" },
+        bloodsail = { "пират", "кровавого паруса", "южных морей", "буканьер", "корсар" },
+        syndicate = { "синдикат" },
+        quilboar = { "свинобраз", "иглогрив", "щетиноспин" },
+        cultist = { "культ", "некромант", "послушни", "сумеречн" },
+        forsaken = { "отрекш", "смертестраж" },
+        ghost = { "призрак", "дух$", "духа$", "привидени", "банши", "фантом" },
+        skeleton = { "скелет", "череп" },
+        ghoul = { "вурдалак", "упыр", "зомби", "гниющ", "поганищ", "мумия", "мумифиц", "восставш" },
+        murloc = { "мурлок" },
+        kobold = { "кобольд" },
+        gnoll = { "гнолл" },
+        troll = { "тролл" },
+        ogre = { "огр$", "огры$", "огра$" },
+        harpy = { "гарпи" },
+        centaur = { "кентавр" },
+        naga = { "нага$", "наги$" },
+        furbolg = { "фурболг" },
+        trogg = { "трогг" },
+        goblin = { "гоблин" },
+        gnome = { "гном" },
+        dwarf = { "дворф", "черного железа", "чёрного железа" },
+        orc = { "орк$", "орки$", "орков$", "орка$" },
+        tauren = { "таурен" },
+        ["night elf"] = { "ночной эльф", "ночная эльфийка", "часов" },
+    },
+}
+ns.FLESH_LOCALE.esMX = ns.FLESH_LOCALE.esES
 
 -- Player corpses, by race (UnitRace's second return).
 ns.RACES = {

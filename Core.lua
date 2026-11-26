@@ -102,22 +102,59 @@ end
 ---------------------------------------------------------------------------
 -- Corpses
 ---------------------------------------------------------------------------
--- ns.FLESH entry -> whole-word patterns of its words; a trailing "s" matches too.
-local patterns = {}
-for _, f in ipairs(ns.FLESH) do
-    patterns[f] = {}
-    for _, word in ipairs(f.words) do
-        local escaped = word:lower():gsub("%p", "%%%0")
-        patterns[f][#patterns[f] + 1] = "%f[%w]" .. escaped .. "s?%f[%W]"
+-- Two-byte UTF-8 letters -> what Fold makes of them: Latin accents dropped (é -> e, ß -> ss,
+-- œ -> oe), Cyrillic capitals lowercased (ё -> е). string.lower only knows ASCII.
+local FOLD = {}
+do
+    -- U+00C0..U+00DE and U+00E0..U+00FE share their order: À Á Â Ã Ä Å Æ Ç È … Ý Þ.
+    local LATIN = { "a", "a", "a", "a", "a", "a", "ae", "c", "e", "e", "e", "e", "i", "i", "i", "i",
+        "d", "n", "o", "o", "o", "o", "o", " ", "o", "u", "u", "u", "u", "y", "th" }
+    for i, to in ipairs(LATIN) do
+        FOLD["\195" .. string.char(127 + i)] = to
+        FOLD["\195" .. string.char(159 + i)] = to
+    end
+    FOLD["\195\159"], FOLD["\195\191"] = "ss", "y"
+    FOLD["\197\146"], FOLD["\197\147"] = "oe", "oe"
+    for b = 0x90, 0x9F do FOLD["\208" .. string.char(b)] = "\208" .. string.char(b + 0x20) end -- А..П
+    for b = 0xA0, 0xAF do FOLD["\208" .. string.char(b)] = "\209" .. string.char(b - 0x20) end -- Р..Я
+    FOLD["\208\129"], FOLD["\209\145"] = "\208\181", "\208\181" -- Ё ё -> е
+end
+
+-- text lowercased, accents off, ASCII punctuation and spaces as one space, padded with a
+-- space each side: "Bandit défias" -> " bandit defias ". Other non-ASCII letters stay, so a
+-- Cyrillic word is a word too.
+function ns.Fold(text)
+    text = text:gsub("[\192-\223][\128-\191]", FOLD):lower():gsub("[%c%p%s]+", " ")
+    return " " .. strtrim(text) .. " "
+end
+
+-- ns.FLESH entry -> its words, folded, as { text, prefix }: English words match whole (or
+-- with an "s"), words of the client's language (ns.FLESH_LOCALE) at the start of a word,
+-- so "skelett" finds "Skelettkrieger", unless they end in "$".
+local words = {}
+do
+    local extra = ns.FLESH_LOCALE[GetLocale and GetLocale() or "enUS"] or {}
+    for _, f in ipairs(ns.FLESH) do
+        local list = {}
+        for _, word in ipairs(f.words) do list[#list + 1] = { ns.Fold(word), false } end
+        for _, word in ipairs(extra[f.words[1]] or {}) do
+            local whole = word:sub(-1) == "$"
+            list[#list + 1] = { ns.Fold(whole and word:sub(1, -2) or word), not whole }
+        end
+        words[f] = list
     end
 end
 
 -- The lines of the first ns.FLESH entry whose words are in the name.
 local function Match(name)
-    local lower = name:lower()
+    local folded = ns.Fold(name)
     for _, f in ipairs(ns.FLESH) do
-        for _, p in ipairs(patterns[f]) do
-            if lower:find(p) then return f.lines end
+        for _, w in ipairs(words[f]) do
+            local text, prefix = w[1], w[2]
+            local stem = text:sub(1, -2) -- " defias"
+            if folded:find(prefix and stem or text, 1, true) or (not prefix and folded:find(stem .. "s ", 1, true)) then
+                return f.lines
+            end
         end
     end
 end
@@ -158,8 +195,12 @@ local function Corpse(unit)
     if not UnitExists(unit) then return nil end
     local dead = UnitIsDead(unit)
     if issecret(dead) or not dead then return nil end
-    local ctype, name = UnitCreatureType(unit), UnitName(unit)
-    if issecret(ctype) or issecret(name) or not (ctype and name and ns.EDIBLE[ctype]) then return nil end
+    local ctype, typeID = UnitCreatureType(unit)
+    local name = UnitName(unit)
+    if issecret(ctype) or issecret(typeID) or issecret(name) then return nil end
+    -- By ID, so any client language works; the name only if the ID is missing.
+    ctype = ns.TYPE_IDS[typeID] or ctype
+    if not (ctype and name and ns.EDIBLE[ctype]) then return nil end
     local lines
     if UnitIsPlayer(unit) then
         local _, race = UnitRace(unit)
@@ -240,7 +281,9 @@ end
 
 -- Prints the comment as if said, for your eyes only.
 local function Echo(text, chatType)
-    local me = UnitName("player")
+    -- Forever's 2nd return is the surname (Era's is a realm): full name as your real /say shows it.
+    local me, surname = UnitName("player")
+    if not ns.ERA and surname and surname ~= "" and not issecret(surname) then me = me .. " " .. surname end
     local line = chatType == "EMOTE" and (me .. " " .. text) or (format(CHAT_SAY_GET or "%s says: ", "[" .. me .. "]") .. text)
     local color = ChatTypeInfo and ChatTypeInfo[chatType]
     DEFAULT_CHAT_FRAME:AddMessage(line, color and color.r or 1, color and color.g or 1, color and color.b or 1)
