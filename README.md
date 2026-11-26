@@ -29,11 +29,11 @@ On Forever, the game hides what a corpse is in dungeons and raids, so there your
 
 Edit every line, and the words that pick them, in `Data.lua`.
 
-## In French
+## In French, German and Spanish
 
-On a French client your critic speaks French: every line has its own French version, in `Locales/frFR.lua` ("Murloc. Salé, avec une finale iodée. Mrglrgl à toi aussi !"). `/dbd language english` switches back to the English lines, `/dbd language auto` (or `french`) to the client's again. The undead accent only respells English lines, so French comments are said plain.
+On a French, German or Spanish (Spain or Mexico) client your critic speaks your language: every line has its own version in `Locales/` (`frFR.lua`, `deDE.lua`, `esES.lua`): "Murloc. Salé, avec une finale iodée.", "Murloc. Salzig, mit fischigem Abgang.", "Múrloc. Salado, con un final a pescado." `/dbd language english` switches back to the English lines, `/dbd language auto` to your client's again. The undead accent only respells English lines, so translated comments are said plain.
 
-Only your own client's language is kept in memory: every other client stops reading the file at its first line.
+Only your own client's language is kept in memory: every other client stops reading those files at their first lines.
 
 ## Undead accent
 
@@ -51,7 +51,7 @@ Use `/dbd` or `/deadbutdelicious` (`/cannibal` and `/foodcritic` work too).
 | `/dbd emote` | Comment as an `/e` emote: *Grimbald chews thoughtfully. "Murloc. Salty."* |
 | `/dbd private` | Toggle: every comment is for your eyes only |
 | `/dbd accent [none\|locked\|jawless]` | Show or set this character's undead accent (locked jaw, jawless), with a sample |
-| `/dbd language [auto\|english\|french]` | French clients: comment in French (default) or English |
+| `/dbd language [auto\|english]` | French, German and Spanish clients: comment in your language (default) or English |
 | `/dbd test` | Taste your target (or the last corpse) without eating it, only you see it |
 | `/dbd reset` | Reset the icon position (Shift-drag moves it) |
 

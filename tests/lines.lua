@@ -3,7 +3,7 @@
 -- (plain, no accent) unless /dbd language english.
 -- lua tests/lines.lua (Lua 5.1, from the addon folder)
 local dir = arg[1] or "."
-local LOCALES = { frFR = "Locales/frFR.lua" }
+local LOCALES = { frFR = "Locales/frFR.lua", deDE = "Locales/deDE.lua", esES = "Locales/esES.lua", esMX = "Locales/esES.lua" }
 local NAME_ROOM = 40 -- bytes a long corpse name may take
 local fails = 0
 local function check(ok, what)

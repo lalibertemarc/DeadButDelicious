@@ -21,6 +21,8 @@
 
 Data.lua
 Locales\frFR.lua
+Locales\deDE.lua
+Locales\esES.lua
 AccentRules.lua
 Accent.lua
 Core.lua
